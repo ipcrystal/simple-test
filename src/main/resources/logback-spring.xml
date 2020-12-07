@@ -90,8 +90,6 @@
 
     <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="trace"/>
 
-    <logger name="org.example.simpletest.mapper" level="debug"/>
-
     <root level="info">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DEBUG_FILE"/>

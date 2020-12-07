@@ -11,3 +11,7 @@ spring:
     url: jdbc:mysql://172.100.1.100:3306/zhuzhenjie?characterEncoding=utf-8&autoReconnect=true&failOverReadOnly=false&useSSL=false&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
     username: root
     password: Root@123#
+
+logging:
+  level:
+    org.example.simpletest.mapper: debug
