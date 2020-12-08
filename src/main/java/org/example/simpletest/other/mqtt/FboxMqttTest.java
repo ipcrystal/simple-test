@@ -10,7 +10,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -24,7 +23,7 @@ public class FboxMqttTest {
 
     static String BROKER = "tcp://47.101.184.101:1883";
     static String CLIENT_ID = "fboxtest-" + UUID.randomUUID().toString();
-    static String TOPIC = "300220101355/testData3";
+    static String TOPIC = "/topic/default";
 
     public static void main(String[] args) {
         // step1: 创建mqtt客户端
@@ -66,14 +65,7 @@ public class FboxMqttTest {
         } catch (MqttException e) {
             log.error(StringUtils.EMPTY, e);
         } finally {
-            if (Objects.nonNull(fboxTestClient)) {
-                try {
-                    fboxTestClient.close();
-                } catch (MqttException e) {
-                    log.error(StringUtils.EMPTY, e);
-                }
-            }
+            log.info("subscriber is running ...");
         }
-
     }
 }

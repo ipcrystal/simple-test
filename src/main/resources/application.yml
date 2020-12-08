@@ -12,6 +12,17 @@ spring:
     username: root
     password: Root@123#
 
+mqtt:
+  broker: tcp://47.101.184.101:1883
+  username: test
+  password: test
+  publisher:
+    clientId: mqtt-publisher
+    defaultTopic: /topic/default
+  subscriber:
+    clientId: ${random.value}
+    defaultTopic: /topic/default
+
 logging:
   level:
     org.example.simpletest.mapper: debug

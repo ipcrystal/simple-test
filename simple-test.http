@@ -9,3 +9,35 @@ Accept: application/json
 ### 随机添加
 GET http://127.0.0.1:8687/testJson/addRandomly
 Accept: application/json
+
+####################################################################################################
+
+### mqtt 发布到默认主题
+POST http://127.0.0.1:8687/testMqtt/publishToDefaultTopic
+Accept: application/json
+Content-Type: application/json
+
+{
+  "payload": "hello,mqtt!"
+}
+
+### mqtt 发布到自定义主题
+POST http://127.0.0.1:8687/testMqtt/publishToDefineTopic
+Accept: application/json
+Content-Type: application/json
+
+{
+  "topic": "/topic/mqtt-test",
+  "payload": "publish to define topic"
+}
+
+### mqtt 发布到自定义主题
+POST http://127.0.0.1:8687/testMqtt/publish
+Accept: application/json
+Content-Type: application/json
+
+{
+  "topic": "/topic/mqtt-test-full",
+  "qos": 2,
+  "payload": "This is a dog!"
+}

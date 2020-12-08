@@ -13,32 +13,38 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import java.util.UUID;
 
 /**
- * 订阅者
+ * 常规mqtt测试
  *
  * @author zhuzhenjie
  * @since 2020/12/8
  */
 @Slf4j
-public class Subscriber {
+public class CommonMqttTest {
 
-    static String CLIENT_ID = "subscriber-" + UUID.randomUUID().toString();
+    static String BROKER = "tcp://47.101.184.101:1883";
+    static String CLIENT_ID = "comment-test-" + UUID.randomUUID().toString();
+    static String[] TOPICS = {
+            "/topic/default",
+            "/topic/mqtt-test",
+            "/topic/mqtt-test-full",
+    };
 
     public static void main(String[] args) {
-
-        MqttClient subscribeClient = null;
+        // step1: 创建mqtt客户端
+        MqttClient fboxTestClient = null;
         try {
-            subscribeClient = new MqttClient(MqttCommonConfig.BROKER, CLIENT_ID, new MemoryPersistence());
+            fboxTestClient = new MqttClient(BROKER, CLIENT_ID, new MemoryPersistence());
 
-            // 设置回调函数
-            subscribeClient.setCallback(new MqttCallback() {
+            // step2: 设置mqtt回调
+            fboxTestClient.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
-                    log.info("connection lost");
+                    log.error("connection lost", cause);
                 }
 
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
-                    log.info("===== ===== ===== ===== =====");
+                    log.info("------------------------------------------------------");
                     log.info("TOPIC   -> {}", topic);
                     log.info("QOS     -> {}", message.getQos());
                     log.info("message -> {}", new String(message.getPayload()));
@@ -50,30 +56,20 @@ public class Subscriber {
                 }
             });
 
+            // step3：设置mqtt连接参数 并连接
             MqttConnectOptions options = new MqttConnectOptions();
-
             options.setCleanSession(true);
-            options.setUserName(MqttCommonConfig.USERNAME);
-            options.setPassword(MqttCommonConfig.PASSWORD.toCharArray());
             options.setConnectionTimeout(10);
             options.setKeepAliveInterval(20);
+            fboxTestClient.connect(options);
 
-            subscribeClient.connect(options);
-
-            subscribeClient.subscribe(MqttCommonConfig.TEST_TOPIC, MqttCommonConfig.QOS);
+            // step4 : mqtt订阅主题
+            fboxTestClient.subscribe(TOPICS);
 
         } catch (MqttException e) {
             log.error(StringUtils.EMPTY, e);
         } finally {
-            log.info("subscriber start success");
+            log.info("subscriber is running ...");
         }
-
     }
 }
-/*
-订阅步骤
-1. 创建 client
-2. 设置回调
-3. 设置连接参数并且连接
-4. 订阅某个主题
- */
