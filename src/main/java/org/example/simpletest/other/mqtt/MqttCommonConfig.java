@@ -1,6 +1,4 @@
-package org.example.simpletest.config.mqtt;
-
-import lombok.Data;
+package org.example.simpletest.other.mqtt;
 
 /**
  * @author zhuzhenjie
