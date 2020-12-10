@@ -23,7 +23,11 @@ public class FboxMqttTest {
 
     static String BROKER = "tcp://47.101.184.101:1883";
     static String CLIENT_ID = "fboxtest-" + UUID.randomUUID().toString();
-    static String TOPIC = "/topic/default";
+    static String[] TOPICS = {
+            "/topic/test/data01",
+            "/topic/test/data02",
+            "/topic/test/data03",
+    };
 
     public static void main(String[] args) {
         // step1: 创建mqtt客户端
@@ -42,7 +46,7 @@ public class FboxMqttTest {
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     log.info("------------------------------------------------------");
                     log.info("TOPIC   -> {}", topic);
-                    log.info("QOS     -> {}", message.getQos());
+//                    log.info("QOS     -> {}", message.getQos());
                     log.info("message -> {}", new String(message.getPayload()));
                 }
 
@@ -60,7 +64,7 @@ public class FboxMqttTest {
             fboxTestClient.connect(options);
 
             // step4 : mqtt订阅主题
-            fboxTestClient.subscribe(TOPIC, 1);
+            fboxTestClient.subscribe(TOPICS);
 
         } catch (MqttException e) {
             log.error(StringUtils.EMPTY, e);
