@@ -36,8 +36,11 @@ dependencies {
 
     implementation 'com.google.guava:guava:29.0-jre'
     implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'commons-io:commons-io:2.8.0'
+    // excel操作
+    implementation 'net.sourceforge.jexcelapi:jxl:2.6.12'
     runtimeOnly 'mysql:mysql-connector-java'
-    implementation 'com.alibaba:fastjson:1.1.15'
+    implementation 'com.alibaba:fastjson:1.2.75'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
