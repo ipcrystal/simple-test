@@ -30,6 +30,10 @@ public class FboxMqttTest {
     static String BROKER = "tcp://47.101.184.101:1883";
     static String CLIENT_ID = "fboxtest-" + UUID.randomUUID().toString();
     static List<QidongDevice> DEVICES;
+
+    static String USERNAME = "jsqdnw";
+    static String PASSWORD = "jsqdnw";
+
     static String[] TOPICS;
 
     private static final String DEVICE_ID = "device_id";
@@ -78,6 +82,11 @@ public class FboxMqttTest {
             options.setCleanSession(true);
             options.setConnectionTimeout(10);
             options.setKeepAliveInterval(20);
+
+            // 用户验证
+            options.setUserName(USERNAME);
+            options.setPassword(PASSWORD.toCharArray());
+
             fboxTestClient.connect(options);
 
             // step4 : mqtt订阅主题

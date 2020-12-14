@@ -6,8 +6,8 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.ClassPathResource;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -20,15 +20,13 @@ public class GetQidongDeviceFromExcel {
 
     public static void main(String[] args) {
         devices().forEach(System.out::println);
-//        devices();
     }
 
 
-    static List<QidongDevice> devices() {
-        String excelPath = "D:\\tmp\\project_qidong\\启东南阳点位表.xls";
+    public static List<QidongDevice> devices() {
         Workbook workbook = null;
         try {
-            workbook = Workbook.getWorkbook(new File(excelPath));
+            workbook = Workbook.getWorkbook(new ClassPathResource("project_qidong/启东南阳点位表.xls").getInputStream());
             Sheet sheet = workbook.getSheet(0);
             int rows = sheet.getRows();
             List<QidongDevice> qidongDeviceListTmp = Lists.newArrayList();
