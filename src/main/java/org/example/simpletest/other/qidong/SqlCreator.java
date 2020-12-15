@@ -2,6 +2,7 @@ package org.example.simpletest.other.qidong;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.example.simpletest.other.excel.GetQidongDeviceFromExcel;
@@ -27,8 +28,8 @@ public class SqlCreator {
     static List<QidongDevice> DEVICES;
     static List<String> deviceNameSort;
 
-    static String sqlInsert = "insert into fa_sewage_plant_device (app_id,device_id,device_name,monitor_items,publish_topic,subscribe_topic) values\r\n";
-    static String sqlFormat = "('1335095064002912258','device_id','device_name','monitor_items','publish_topic','subscribe_topic')";
+    static String sqlInsert = "insert into fa_sewage_plant_device (id,app_id,device_id,device_name,monitor_items,publish_topic,subscribe_topic) values\r\n";
+    static String sqlFormat = "(primary_id,1335095064002912258,'device_id','device_name','monitor_items','publish_topic','subscribe_topic')";
 
     static {
         DEVICES = GetQidongDeviceFromExcel.devices();
@@ -60,7 +61,9 @@ public class SqlCreator {
 
                     String publishTopic = device.getMqttTopic();
                     String subscribeTopic = device.getMqttTopic() + "/" + "subscribe";
-                    return sqlFormat.replace("device_id", deviceId)
+                    return sqlFormat
+                            .replace("primary_id", String.valueOf(IdWorker.getId()))
+                            .replace("device_id", deviceId)
                             .replace("device_name", deviceName)
                             .replace("monitor_items", monitorAddr)
                             .replace("publish_topic", publishTopic)
