@@ -1,9 +1,7 @@
 package org.example.simpletest.service.impl;
 
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
-import org.apache.ibatis.io.ResolverUtil;
 import org.example.simpletest.entites.po.TestJson;
 import org.example.simpletest.mapper.TestJsonMapper;
 import org.example.simpletest.service.TestJsonService;
