@@ -18,6 +18,7 @@ import java.util.List;
 @Builder
 @Data
 public class QidongDevice {
+
     /**
      * 设备名称
      */
@@ -44,6 +45,11 @@ public class QidongDevice {
     @Builder
     @Data
     public static class DeviceAttribute {
+
+        /**
+         * 对应fbox属性的名称
+         */
+        private String fboxAttrName;
         /**
          * 监测属性中文名称
          */

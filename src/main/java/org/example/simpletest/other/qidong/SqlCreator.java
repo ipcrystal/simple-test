@@ -53,6 +53,7 @@ public class SqlCreator {
                     JSONArray jsonArray = new JSONArray();
                     deviceAttributeList.stream().map(deviceAttribute -> {
                         JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("fbox", deviceAttribute.getFboxAttrName());
                         jsonObject.put("en", deviceAttribute.getAttrENName());
                         jsonObject.put("cn", deviceAttribute.getAttrCNName());
                         return jsonObject;
