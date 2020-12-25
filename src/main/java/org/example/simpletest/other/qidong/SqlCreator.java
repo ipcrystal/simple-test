@@ -31,6 +31,9 @@ public class SqlCreator {
     static String sqlInsert = "insert into fa_sewage_plant_device (id,app_id,device_id,device_name,monitor_items,publish_topic,subscribe_topic) values\r\n";
     static String sqlFormat = "(primary_id,1335095064002912258,'device_id','device_name','monitor_items','publish_topic','subscribe_topic')";
 
+
+    static String sqlUpdate = "update fa_sewage_plant_device set monitor_items = '#{monitor_iterm}' where device_id = '#{device_id}'";
+
     static {
         DEVICES = GetQidongDeviceFromExcel.devices();
         try {
@@ -43,6 +46,40 @@ public class SqlCreator {
 
 
     public static void main(String[] args) {
+//        insertSql();
+
+        updateSql();
+
+    }
+
+    private static void updateSql() {
+        Map<String, QidongDevice> nameDeviceMap = DEVICES.stream().collect(Collectors.toMap(QidongDevice::getDeviceName, Function.identity(), (a, b) -> a));
+
+        String updateSql = deviceNameSort.stream().map(nameDeviceMap::get)
+                .map(device -> {
+                    String deviceId = device.getDeviceId();
+
+                    List<QidongDevice.DeviceAttribute> deviceAttributeList = device.getDeviceAttributeList();
+                    JSONArray jsonArray = new JSONArray();
+                    deviceAttributeList.stream().map(deviceAttribute -> {
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("fbox", deviceAttribute.getFboxAttrName());
+                        jsonObject.put("opentsdb", "jsqdnw.default.");
+                        jsonObject.put("en", deviceAttribute.getAttrENName());
+                        jsonObject.put("cn", deviceAttribute.getAttrCNName());
+                        return jsonObject;
+                    }).forEach(jsonArray::add);
+                    String monitorAddr = jsonArray.toJSONString();
+
+                    return sqlUpdate.replace("#{monitor_iterm}", monitorAddr)
+                            .replace("#{device_id}", deviceId);
+                })
+                .collect(Collectors.joining(";\r\n"));
+
+        System.out.println(updateSql);
+    }
+
+    private static void insertSql() {
         Map<String, QidongDevice> nameDeviceMap = DEVICES.stream().collect(Collectors.toMap(QidongDevice::getDeviceName, Function.identity(), (a, b) -> a));
 
         String append = deviceNameSort.stream().map(nameDeviceMap::get)
@@ -72,7 +109,6 @@ public class SqlCreator {
                 }).collect(Collectors.joining(",\r\n"));
 
         System.out.println(sqlInsert + append);
-
     }
 
 }
