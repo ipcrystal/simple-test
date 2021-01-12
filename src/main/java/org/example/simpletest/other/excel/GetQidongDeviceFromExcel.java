@@ -73,10 +73,10 @@ public class GetQidongDeviceFromExcel {
                 String deviceName = StringUtils.trim(row[1].getContents());
                 QidongDevice device = deviceNameMap.get(deviceName);
 
-                String attrCNName = StringUtils.trim(row[2].getContents());
-                String attrENName = StringUtils.trim(row[3].getContents());
+                String attrCnName = StringUtils.trim(row[2].getContents());
+                String attrEnName = StringUtils.trim(row[3].getContents());
 
-                device.getDeviceAttributeList().add(QidongDevice.DeviceAttribute.builder().attrCNName(attrCNName).attrENName(attrENName).build());
+                device.getDeviceAttributeList().add(QidongDevice.DeviceAttribute.builder().attrCNName(attrCnName).attrENName(attrEnName).build());
             }
 
             return Lists.newArrayList(deviceNameMap.values());
@@ -142,12 +142,12 @@ public class GetQidongDeviceFromExcel {
                 String deviceName = StringUtils.trim(row[2].getContents());
                 QidongDevice device = deviceNameMap.get(deviceName);
 
-                String attrCNName = StringUtils.trim(row[3].getContents());
-                String attrENName = StringUtils.trim(row[4].getContents());
+                String attrCnName = StringUtils.trim(row[3].getContents());
+                String attrEnName = StringUtils.trim(row[4].getContents());
                 device.getDeviceAttributeList().add(
                         QidongDevice.DeviceAttribute.builder()
                                 .fboxAttrName(fboxAttrName)
-                                .attrCNName(attrCNName).attrENName(attrENName).build());
+                                .attrCNName(attrCnName).attrENName(attrEnName).build());
             }
 
             return Lists.newArrayList(deviceNameMap.values());
@@ -155,6 +155,6 @@ public class GetQidongDeviceFromExcel {
             e.printStackTrace();
         }
 
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 }
