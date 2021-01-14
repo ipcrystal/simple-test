@@ -10,6 +10,7 @@ import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,10 +74,11 @@ public class TranslateQidong {
         }
     }
 
-    static Map<String, String> paramTranslateMap() {
+    public static Map<String, String> paramTranslateMap() {
         Workbook translate = null;
         try {
-            translate = Workbook.getWorkbook(new File("D:/tmp/project_qidong/启东南阳翻译.xls"));
+//            translate = Workbook.getWorkbook(new File("D:/tmp/project_qidong/启东南阳翻译.xls"));
+            translate = Workbook.getWorkbook(new ClassPathResource("project_qidong/启东南阳翻译.xls").getInputStream());
             Sheet sheet = translate.getSheet(0);
             int rows = sheet.getRows();
             Map<String, String> paramTranslateMap = Maps.newHashMap();
