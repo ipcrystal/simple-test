@@ -1,6 +1,9 @@
 plugins {
     id 'org.springframework.boot' version '2.4.0'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id "org.jetbrains.kotlin.jvm" version "1.4.21"
+    id "org.jetbrains.kotlin.plugin.spring" version "1.4.21"
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.21'
     id 'java'
 }
 
@@ -13,6 +16,25 @@ configurations {
         extendsFrom annotationProcessor
     }
 }
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
+}
+
+
+//sourceSets {
+//    main.kotlin.srcDirs += 'src/main/kotlin'
+//    main.java.srcDirs += 'src/main/java'
+//}
 
 repositories {
     maven { url { 'http://maven.aliyun.com/nexus/content/groups/public/' } }
@@ -41,6 +63,13 @@ dependencies {
     implementation 'net.sourceforge.jexcelapi:jxl:2.6.12'
     runtimeOnly 'mysql:mysql-connector-java'
     implementation 'com.alibaba:fastjson:1.2.75'
+
+    // kotlin相关
+    // kotlin需要的内容
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

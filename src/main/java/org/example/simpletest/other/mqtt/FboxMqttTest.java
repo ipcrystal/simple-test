@@ -24,7 +24,8 @@ public class FboxMqttTest {
     static String BROKER = "tcp://47.101.184.101:1883";
     static String CLIENT_ID = "fboxtest-" + UUID.randomUUID().toString();
     static String[] TOPICS = {
-            "/topic/js/nt/qidong/nanyang/+",
+            "/topic/js/nt/qidong/nanyang/test"
+//            "/topic/js/nt/rudong/test"
     };
 
     public static void main(String[] args) {
