@@ -11,13 +11,18 @@ import java.util.*
  */
 private val log = getLogger("MqttTest-Rudong")
 
-const val BROKER = "tcp://47.101.184.101:1883"
-val CLIENT_ID = "rd-test-${UUID.randomUUID()}"
+private const val broker = "tcp://47.101.184.101:1883"
+private val clientId = "rd-test-${UUID.randomUUID()}"
+
+private val topics = arrayOf(
+    "/topic/rudong/fl-test", "/topic/rudong/bc-test",
+    "/topic/rudong/hk-test", "/topic/rudong/yk-test"
+)
 
 fun main() {
-    var client: MqttClient
+    val client: MqttClient
     try {
-        client = MqttClient(BROKER, CLIENT_ID, MemoryPersistence())
+        client = MqttClient(broker, clientId, MemoryPersistence())
 
         client.setCallback(object : MqttCallback {
             override fun connectionLost(cause: Throwable?) {
@@ -40,9 +45,10 @@ fun main() {
         options.keepAliveInterval = 20
         client.connect(options)
 
+        client.subscribe(topics)
     } catch (e: Exception) {
         e.printStackTrace()
+    } finally {
+        log.info("如东mqtt测试客户端${clientId}启动...")
     }
 }
-
-

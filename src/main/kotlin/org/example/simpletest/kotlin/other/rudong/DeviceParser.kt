@@ -22,24 +22,65 @@ import java.io.File
 private val log = getLogger("rudong-device-parses")
 
 
-val xlsNames = listOf("如东_栟茶", "如东_丰利",
-        "如东_河口", "如东_洋口", "如东_袁庄")
+private val xlsNames = listOf(
+    "如东_栟茶", "如东_丰利",
+    "如东_河口", "如东_洋口", "如东_袁庄"
+)
 
-const val tmpFolder = "D:/tmp/project_rudong/"
+private const val tmpFolder = "D:/tmp/project_rudong/"
 
 
 fun main() {
-    init()
-    xlsNames.forEach { xlsName ->
-        createTransXls(
-                createNewXls(onePlantDevice(xlsName), xlsName),
-                xlsName)
-    }
+//    init()
+//    xlsNames.forEach { createTransXls(createBasicXls(onePlantDevice(it), it), it) }
+
+    xlsNames.forEach { translate(getTranslateMap(it), it) }
 }
 
 
+fun translate(trans: Map<String, String>, xlsName: String) {
+    if (trans.isEmpty()) return
+    val path = "${tmpFolder}${xlsName}_basic.xls"
+    try {
+        val file = File(path)
+        val wb = Workbook.getWorkbook(file)
+        val wwb = Workbook.createWorkbook(file, wb)
+
+        val wSheet = wwb.getSheet(0)
+
+        val cnColNum = 2
+        val enColNum = 3
+        IntRange(1, wSheet.rows - 1).forEach {
+            val cell = wSheet.getCell(cnColNum, it)
+            val cn = cell.contents.trim()
+
+            val en = if (StringUtils.isNotBlank(cn) && trans.containsKey(cn)) trans[cn] else StringUtils.EMPTY
+
+            if (StringUtils.isNotBlank(en)) {
+                wSheet.addCell(Label(enColNum, it, en))
+            }
+
+        }
+        wwb.write()
+        wwb.close()
+        wb.close()
+    } catch (e: Exception) {
+        log.error(StringUtils.EMPTY, e)
+    }
+}
+
+fun getTranslateMap(xlsName: String): Map<String, String> {
+    val classpath = "project_rudong/xls/translate/${xlsName}_translate.xls"
+    val wb = Workbook.getWorkbook(ClassPathResource(classpath).inputStream)
+    val st = wb.getSheet(0)
+    val map: MutableMap<String, String> = mutableMapOf<String, String>()
+    IntRange(0, st.rows - 1).forEach { map[st.getCell(0, it).contents.trim()] = st.getCell(1, it).contents.trim() }
+    return map
+}
+
 /**
- * 创建部分翻译
+ *
+ * 新建需要翻译的英文部分
  */
 fun createTransXls(cnSet: Set<String>?, plantName: String) {
     if (null == cnSet || cnSet.isEmpty()) {
@@ -58,7 +99,7 @@ fun createTransXls(cnSet: Set<String>?, plantName: String) {
 
         val cnCol = 0
         var rowBegin = 0
-        cnSet.forEach { sheet.addCell(Label(rowBegin++, cnCol, it)) }
+        cnSet.forEach { sheet.addCell(Label(cnCol, rowBegin++, it)) }
 
         wb.write()
         wb.close()
@@ -71,7 +112,7 @@ fun createTransXls(cnSet: Set<String>?, plantName: String) {
 /**
  *
  */
-fun createNewXls(deviceInfos: Map<String, List<DeviceTmp>>?, plantName: String): Set<String> {
+fun createBasicXls(deviceInfos: Map<String, List<DeviceTmp>>?, plantName: String): Set<String> {
     if (deviceInfos == null || deviceInfos.isEmpty()) {
         return emptySet()
     }
@@ -91,6 +132,7 @@ fun createNewXls(deviceInfos: Map<String, List<DeviceTmp>>?, plantName: String):
         sheet.addCell(Label(groupCol, 0, "设备名称"))
         sheet.addCell(Label(nameCol, 0, "监测项全名"))
         sheet.addCell(Label(monitorItemCnCol, 0, "监测项中文名"))
+        sheet.addCell(Label(3, 0, "监测项英文名"))
 
         var begin = 1
 
@@ -122,7 +164,7 @@ fun createNewXls(deviceInfos: Map<String, List<DeviceTmp>>?, plantName: String):
         }
         wb.write()
         wb.close()
-        return cnSet
+        return cnSet.filter { StringUtils.isNotBlank(it) }.toHashSet()
     } catch (e: Exception) {
         e.printStackTrace()
         return emptySet()

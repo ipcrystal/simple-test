@@ -19,7 +19,7 @@ public class IDCreator {
      * @param basicInfo
      * @return
      */
-    public static String createID(BasicInfo basicInfo) {
+    public static String createId(BasicInfo basicInfo) {
         try {
             TimeUnit.MILLISECONDS.sleep(1);
         } catch (InterruptedException e) {
@@ -27,7 +27,23 @@ public class IDCreator {
         }
         long tm = System.currentTimeMillis();
         String basicAppName = basicInfo.getBasicAppName();
-        return basicAppName + "-" + createID(tm);
+        return basicAppName + "-" + createId(tm);
+    }
+
+    /**
+     * id生成
+     *
+     * @param prefix
+     * @return
+     */
+    public static String createId(String prefix) {
+        try {
+            TimeUnit.MILLISECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        long tm = System.currentTimeMillis();
+        return prefix + createId(tm);
     }
 
     /**
@@ -36,7 +52,7 @@ public class IDCreator {
      * @param tm
      * @return
      */
-    private static String createID(long tm) {
+    private static String createId(long tm) {
         return string10ToN(tm, 26);
     }
 
@@ -69,7 +85,7 @@ public class IDCreator {
 
     public static void main(String[] args) {
         for (int i = 0; i < 100; i++) {
-            System.out.println(createID(BasicInfo.builder().basicAppName("qd-ny").build()));
+            System.out.println(createId(BasicInfo.builder().basicAppName("qd-ny").build()));
         }
     }
 }
