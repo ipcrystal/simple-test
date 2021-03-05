@@ -1,0 +1,11 @@
+### 获取表所有数据
+GET http://127.0.0.1:8687/testJson/listAll
+Accept: application/json
+
+### 根据 id 获取一条 test_json 表的数据
+GET http://127.0.0.1:8687/testJson/getById/10001
+Accept: application/json
+
+### 随机添加
+GET http://127.0.0.1:8687/testJson/addRandomly
+Accept: application/json
