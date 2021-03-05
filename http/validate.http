@@ -1,0 +1,56 @@
+######## ######## ######## ######## ########  TEST NotNull ######## ######## ######## ######## ######## ########
+### 测试 @NotNull
+POST http://localhost:8687/testValidate/notNull
+Content-Type: application/json
+
+{
+  "notNullStr": null,
+  "notBlankStr": "Irrelevant"
+}
+
+
+### 测试 @NotNull
+POST http://localhost:8687/testValidate/notNull
+Content-Type: application/json
+
+{
+  "notNullStr": "",
+  "notBlankStr": "Irrelevant"
+}
+
+### 测试 @NotNull
+POST http://localhost:8687/testValidate/notNull
+Content-Type: application/json
+
+{
+  "notNullStr": "validate not null",
+  "notBlankStr": "Irrelevant"
+}
+
+######## ######## ######## ######## ########  TEST NotBlank ######## ######## ######## ######## ######## ########
+### 测试 @NotBlank
+POST http://localhost:8687/testValidate/notBlank
+Content-Type: application/json
+
+{
+  "notNullStr": "Irrelevant",
+  "notBlankStr": null
+}
+
+### 测试 @NotBlank
+POST http://localhost:8687/testValidate/notBlank
+Content-Type: application/json
+
+{
+  "notNullStr": "Irrelevant",
+  "notBlankStr": ""
+}
+
+### 测试 @NotBlank
+POST http://localhost:8687/testValidate/notBlank
+Content-Type: application/json
+
+{
+  "notNullStr": "Irrelevant",
+  "notBlankStr": "validate not blank"
+}
